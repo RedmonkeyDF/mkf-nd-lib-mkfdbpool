@@ -1,3 +1,5 @@
+import { MkfDbPoolClient } from './mkfdb.poolclient'
+
 export type MkfDbconfig = {
 
     host: string,
@@ -14,4 +16,6 @@ export abstract class MkfDbPoolAdapter {
     abstract get totalclients(): number
     abstract get idleclients(): number
     abstract get waitingclients(): number
+
+    abstract getClient(): Promise<MkfDbPoolClient>
 }

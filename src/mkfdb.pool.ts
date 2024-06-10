@@ -1,4 +1,5 @@
 import { MkfDbPoolAdapter } from './mkfdb.adapterbase'
+import { MkfDbPoolClient } from './mkfdb.poolclient'
 
 export class MkfDbPool {
 
@@ -36,5 +37,10 @@ export class MkfDbPool {
     static getPoolInstance (): MkfDbPool {
 
         return this._instance
+    }
+
+    async getClient() : Promise<MkfDbPoolClient> {
+
+        return this._adapter.getClient()
     }
 }

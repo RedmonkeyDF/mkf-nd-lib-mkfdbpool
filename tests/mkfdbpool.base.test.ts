@@ -2,6 +2,7 @@ import { expect, describe, it } from 'vitest'
 
 import { MkfDbPool } from '../src'
 import { type MkfDbconfig, MkfDbPoolAdapter } from '../src'
+import { MkfDbPoolClient } from '../src/mkfdb.poolclient'
 
 const dummydbcfg: MkfDbconfig = { host: 'localhost', port: 5432, path: 'dummy', user: 'dummy', password: 'dummy' }
 
@@ -31,6 +32,11 @@ class TestDbPoolAdapter extends MkfDbPoolAdapter {
     get totalclients(): number {
         return this._total
     }
+
+    async getClient(): Promise<MkfDbPoolClient> {
+
+        return Promise.resolve(new MkfDbPoolClient(this))
+    }
 }
 
 describe('MkfDbPool tests', () => {
@@ -54,5 +60,12 @@ describe('MkfDbPool tests', () => {
         const pooltwo: MkfDbPool = MkfDbPool.initialisePool(new TestDbPoolAdapter(dummydbcfg, 4, 5, 6))
 
         expect(poolone).not.toStrictEqual(pooltwo)
-    } )
+    })
+
+    it('Should return an instance of MkfDbPoolClient when getClient is called', async () => {
+
+        const cp: MkfDbPool = MkfDbPool.initialisePool(new TestDbPoolAdapter(dummydbcfg, 10, 5, 3))
+
+        await expect(cp.getClient()).resolves.toBeInstanceOf(MkfDbPoolClient)
+    })
 })
