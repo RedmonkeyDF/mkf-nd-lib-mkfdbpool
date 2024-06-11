@@ -1,7 +1,7 @@
 import { expect, describe, it } from 'vitest'
 
 import { MkfDbPool } from '../src'
-import { MkfDbPoolClient } from '../src/mkfdb.poolclient'
+import { MkfDbPoolClient } from '../src'
 
 class TestDbPoolClient implements MkfDbPoolClient {
 
@@ -48,6 +48,11 @@ class TestDbPool extends MkfDbPool {
     async getClient(): Promise<MkfDbPoolClient> {
 
         return Promise.resolve(new TestDbPoolClient())
+    }
+
+    async close(): Promise<void> {
+
+        return Promise.resolve()
     }
 }
 

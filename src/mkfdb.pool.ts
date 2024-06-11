@@ -4,14 +4,14 @@ export abstract class MkfDbPool {
 
     private static _instance: MkfDbPool | undefined = undefined
 
-    protected constructor() {
-    }
+    protected constructor() {}
 
     abstract get totalclients(): number
     abstract get idleclients(): number
     abstract get waitingclients(): number
 
     abstract getClient() : Promise<MkfDbPoolClient>
+    abstract close(): Promise<void>
 
     static getPoolInstance<T extends MkfDbPool>(type: { new(): T ;}): MkfDbPool {
 
