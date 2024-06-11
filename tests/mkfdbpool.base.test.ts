@@ -6,6 +6,19 @@ import { MkfDbPoolClient } from '../src/mkfdb.poolclient'
 
 const dummydbcfg: MkfDbconfig = { host: 'localhost', port: 5432, path: 'dummy', user: 'dummy', password: 'dummy' }
 
+class TestDbPoolClient implements MkfDbPoolClient {
+
+    query(sql: string, args?: []): Promise<any[]> {
+
+        return Promise.resolve([])
+    }
+
+    release(destroy?: boolean): Promise<void> {
+
+        return Promise.resolve()
+    }
+}
+
 class TestDbPoolAdapter extends MkfDbPoolAdapter {
 
     private readonly _total: number
@@ -35,7 +48,7 @@ class TestDbPoolAdapter extends MkfDbPoolAdapter {
 
     async getClient(): Promise<MkfDbPoolClient> {
 
-        return Promise.resolve(new MkfDbPoolClient(this))
+        return Promise.resolve(new TestDbPoolClient())
     }
 }
 
@@ -66,6 +79,6 @@ describe('MkfDbPool tests', () => {
 
         const cp: MkfDbPool = MkfDbPool.initialisePool(new TestDbPoolAdapter(dummydbcfg, 10, 5, 3))
 
-        await expect(cp.getClient()).resolves.toBeInstanceOf(MkfDbPoolClient)
+        await expect(cp.getClient()).resolves.toSatisfy((ob: any): ob is MkfDbPoolClient => ob.query !== undefined)
     })
 })

@@ -1,11 +1,7 @@
 import { MkfDbPoolAdapter } from './mkfdb.adapterbase'
 
-export class MkfDbPoolClient {
+export interface MkfDbPoolClient {
 
-    private _adapter: MkfDbPoolAdapter
-
-    constructor (adapter: MkfDbPoolAdapter) {
-
-        this._adapter = adapter
-    }
+    query(sql: string, args?: []): Promise<any[]>
+    release(destroy?: boolean): Promise<void>
 }
