@@ -12,6 +12,7 @@ class TestDbPoolClient implements MkfDbPoolClient {
 
     release(destroy?: boolean): Promise<void> {
 
+
         return Promise.resolve()
     }
 }
