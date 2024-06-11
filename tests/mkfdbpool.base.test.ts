@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'vitest'
 
-import { MkfDbPool } from '../src'
+import { MkfDbPool, MkfNodepgPool } from '../src'
 import { MkfDbPoolClient } from '../src'
 
 class TestDbPoolClient implements MkfDbPoolClient {
@@ -16,15 +16,11 @@ class TestDbPoolClient implements MkfDbPoolClient {
     }
 }
 
-class TestDbPool extends MkfDbPool {
+class TestDbPool implements MkfDbPool {
 
     private _total: number = 0
     private _idle: number = 0
     private _waiting: number = 0
-
-    constructor() {
-        super()
-    }
 
     get waitingclients(): number {
         return this._waiting
@@ -60,21 +56,19 @@ describe('MkfDbPool tests', () => {
 
     it ('Should initialise a DBPool when passed an adapter in constructor', () => {
 
-        const cp: TestDbPool = MkfDbPool.getPoolInstance(TestDbPool) as TestDbPool
-        cp.setPoolInfo(10, 5, 3)
-        const mp: MkfDbPool = MkfDbPool.getPoolInstance(TestDbPool)
+        const mp: TestDbPool = new TestDbPool()
+        mp.setPoolInfo(10, 5, 3)
 
         expect(mp).not.toBe(undefined)
-        expect(mp).toBeInstanceOf(MkfDbPool)
+        expect(mp).toBeInstanceOf(TestDbPool)
         expect(mp.totalclients).toStrictEqual(10)
         expect(mp.idleclients).toStrictEqual(5)
         expect(mp.waitingclients).toStrictEqual(3)
-        expect(mp).toStrictEqual(cp)
     })
 
     it('Should return an instance of MkfDbPoolClient when getClient is called', async () => {
 
-        const cp: MkfDbPool = MkfDbPool.getPoolInstance(TestDbPool)
+        const cp: MkfDbPool = new TestDbPool()
 
         await expect(cp.getClient()).resolves.toSatisfy((ob: any): ob is MkfDbPoolClient => ob.query !== undefined)
     })

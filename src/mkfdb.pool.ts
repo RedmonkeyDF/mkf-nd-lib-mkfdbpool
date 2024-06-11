@@ -1,30 +1,11 @@
 import { MkfDbPoolClient } from './mkfdb.poolclient'
 
-export abstract class MkfDbPool {
+export interface MkfDbPool {
 
-    private static _instance: MkfDbPool | undefined = undefined
+    get totalclients(): number
+    get idleclients(): number
+    get waitingclients(): number
 
-    protected constructor() {}
-
-    abstract get totalclients(): number
-    abstract get idleclients(): number
-    abstract get waitingclients(): number
-
-    abstract getClient() : Promise<MkfDbPoolClient>
-    abstract close(): Promise<void>
-
-    static getPoolInstance<T extends MkfDbPool>(type: { new(): T ;}): MkfDbPool {
-
-        if (!this._instance) {
-
-            this._instance = new type()
-        }
-
-        if (this._instance) {
-
-            return this._instance
-        }
-
-        throw new Error('error creating pool instance')
-    }
+    getClient() : Promise<MkfDbPoolClient>
+    close(): Promise<void>
 }
