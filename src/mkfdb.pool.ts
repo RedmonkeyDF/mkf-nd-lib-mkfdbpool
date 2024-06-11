@@ -1,46 +1,30 @@
-import { MkfDbPoolAdapter } from './mkfdb.adapterbase'
 import { MkfDbPoolClient } from './mkfdb.poolclient'
 
-export class MkfDbPool {
+export abstract class MkfDbPool {
 
-    private static _instance: MkfDbPool
+    private static _instance: MkfDbPool | undefined = undefined
 
-    private _adapter: MkfDbPoolAdapter
-
-    private constructor (adapter: MkfDbPoolAdapter) {
-
-        this._adapter = adapter
+    protected constructor() {
     }
 
-    get totalclients(): number {
+    abstract get totalclients(): number
+    abstract get idleclients(): number
+    abstract get waitingclients(): number
 
-        return this._adapter.totalclients
-    }
+    abstract getClient() : Promise<MkfDbPoolClient>
 
-    get idleclients(): number {
+    static getPoolInstance<T extends MkfDbPool>(type: { new(): T ;}): MkfDbPool {
 
-        return this._adapter.idleclients
-    }
+        if (!this._instance) {
 
-    get waitingclients(): number {
+            this._instance = new type()
+        }
 
-        return this._adapter.waitingclients
-    }
+        if (this._instance) {
 
-    static initialisePool (adapter: MkfDbPoolAdapter): MkfDbPool {
+            return this._instance
+        }
 
-        this._instance = new MkfDbPool(adapter)
-
-        return this._instance
-    }
-
-    static getPoolInstance (): MkfDbPool {
-
-        return this._instance
-    }
-
-    async getClient() : Promise<MkfDbPoolClient> {
-
-        return this._adapter.getClient()
+        throw new Error('error creating pool instance')
     }
 }
