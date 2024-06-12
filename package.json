@@ -1,6 +1,6 @@
 {
     "name": "@redmonkeydf/mkfdbpool",
-    "version": "0.1.0-dev.1",
+    "version": "0.1.0-dev.2",
     "description": "A decoupling database pool interface.  Personal use for projects.",
     "main": "./dist/index.js",
     "scripts": {
