@@ -1,11 +1,15 @@
 {
     "name": "@redmonkeydf/mkfdbpool",
-    "version": "0.1.0-dev.2",
+    "version": "0.1.0-dev.3",
     "description": "A decoupling database pool interface.  Personal use for projects.",
     "main": "./dist/index.js",
     "scripts": {
         "test": "vitest --run",
         "build": "tsup ./src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/RedmonkeyDF/mkf-nd-lib-mkfdbpool"
     },
     "files": [
         "dist",
