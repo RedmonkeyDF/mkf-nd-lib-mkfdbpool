@@ -1,7 +1,7 @@
 {
     "name": "@redmonkeydf/mkfdbpool",
-    "version": "1.0.0",
-    "description": "",
+    "version": "0.1.0-dev.1",
+    "description": "A decoupling database pool interface.  Personal use for projects.",
     "main": "./dist/index.js",
     "scripts": {
         "test": "vitest --run",
@@ -21,7 +21,7 @@
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
     "keywords": [],
-    "author": "",
+    "author": "Sean Mathews",
     "license": "ISC",
     "devDependencies": {
         "@types/pg": "^8.11.6",
