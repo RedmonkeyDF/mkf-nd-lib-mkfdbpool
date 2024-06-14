@@ -1,5 +1,5 @@
 import pg from 'pg'
-import type { Pool, PoolClient } from 'pg'
+import type { Pool, PoolClient, QueryResult } from 'pg'
 
 import { MkfDbPool } from './mkfdb.pool'
 import { MkfDbPoolClient } from './mkfdb.poolclient'
@@ -34,7 +34,7 @@ export class MkfNodepgPoolClient implements MkfDbPoolClient {
 
        try {
 
-           let res: pg.QueryResult<any>
+           let res: QueryResult<any>
 
            if (args) res = await this._client.query(sql, args); else res = await this._client.query(sql)
 
@@ -86,7 +86,7 @@ export class MkfNodepgPool implements MkfDbPool{
 
         try {
 
-            const cli: pg.PoolClient = await this._pool.connect()
+            const cli: PoolClient = await this._pool.connect()
 
             return new MkfNodepgPoolClient(cli)
 
